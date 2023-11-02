@@ -7,7 +7,7 @@ name: UnityBuild
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master","Dehayat-patch-1" ]
   pull_request:
     branches: [ "master" ]
 
