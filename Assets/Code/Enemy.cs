@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Enemy : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class Enemy : MonoBehaviour
     public float waitBeforeAttack;
     public float waitAfterAttack;
     public Collider2D hitBox;
+    public Transform root;
+    public Transform attackPoint;
+    public float rotationSlerp = 0.3f;
 
     private Cat player;
     private Rigidbody2D playerRb;
@@ -35,32 +39,58 @@ public class Enemy : MonoBehaviour
         {
             if (CloseEnoughToAttack())
             {
-                yield return Attack();
+                if (IsFacing())
+                {
+                    yield return Attack();
+                }
+                else
+                {
+                    yield return Face();
+                }
             }
             else
             {
-                yield return Follow();
+                if (IsFacing(0.5f))
+                {
+                    yield return Follow();
+                }
+                else
+                {
+                    yield return Face();
+                }
             }
             yield return null;
         }
     }
+
+
+    IEnumerator Face()
+    {
+        var moveDir = player.transform.position - transform.position;
+        var targetRot = Vector3.SignedAngle(Vector3.right, moveDir, Vector3.forward);
+        root.rotation = Quaternion.Slerp(root.rotation, Quaternion.Euler(0, 0, targetRot), rotationSlerp);
+        yield break;
+    }
+
+    private bool IsFacing(float minDot = 0.9f)
+    {
+        var lookDir = player.transform.position - transform.position;
+        lookDir.Normalize();
+        return Vector3.Dot(root.right, lookDir) > minDot;
+    }
+
     private Vector3 closestPlayerPos;
-    private Vector3 closestMyPos;
     private bool CloseEnoughToAttack()
     {
-        var closestPlayerPos = player.hurtBox.ClosestPoint(transform.position);
-        var closestMyPos = hitBox.ClosestPoint(closestPlayerPos);
-        this.closestMyPos = closestMyPos;
+        var closestPlayerPos = player.hurtBox.ClosestPoint(attackPoint.position);
         this.closestPlayerPos = closestPlayerPos;
-        return Vector3.Distance(closestMyPos, closestPlayerPos) < maxAttackDistance;
+        return Vector3.Distance(attackPoint.position, closestPlayerPos) < maxAttackDistance;
     }
     void OnDrawGizmos()
     {
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(closestPlayerPos, 0.2f);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(closestMyPos, 0.2f);
 
     }
     IEnumerator Attack()
@@ -75,16 +105,7 @@ public class Enemy : MonoBehaviour
         var moveDir = player.transform.position - transform.position;
         moveDir.Normalize();
         rb.velocity = moveDir * followSpeed;
-        var scale = transform.localScale;
-        if (moveDir.x < -0.1)
-        {
-            scale.x = -Mathf.Abs(scale.x);
-        }
-        else if (moveDir.x > 0.1)
-        {
-            scale.x = Mathf.Abs(scale.x);
-        }
-        transform.localScale = scale;
-        yield return null;
+        yield return Face();
+        yield break;
     }
 }
