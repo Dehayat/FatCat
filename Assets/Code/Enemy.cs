@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Rendering;
 
 public class Enemy : MonoBehaviour
@@ -18,19 +20,24 @@ public class Enemy : MonoBehaviour
     public Transform attackPoint;
     public float rotationSlerp = 0.3f;
     public float rotationSlerpVariance = 0.1f;
+    public float minFollowPath = 0.2f;
 
     private Cat player;
     private Rigidbody2D playerRb;
+    private NavMeshAgent agent;
     private Rigidbody2D rb;
 
     private void Awake()
     {
+        agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody2D>();
         rotationSlerp += UnityEngine.Random.Range(-rotationSlerpVariance / 2, rotationSlerpVariance / 2);
     }
 
     private void Start()
     {
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
         player = FindAnyObjectByType<Cat>();
         playerRb = player.GetComponent<Rigidbody2D>();
         StartCoroutine(DoBehaviour());
@@ -38,46 +45,42 @@ public class Enemy : MonoBehaviour
 
     IEnumerator DoBehaviour()
     {
+
+        yield return null;
         while (true)
         {
             if (CloseEnoughToAttack())
             {
-                if (IsFacing())
+                agent.isStopped = true;
+                if (IsFacing(player.transform.position))
                 {
                     yield return Attack();
                 }
                 else
                 {
-                    yield return Face();
+                    yield return Face(player.transform.position);
                 }
             }
             else
             {
-                if (IsFacing(0.5f))
-                {
-                    yield return Follow();
-                }
-                else
-                {
-                    yield return Face();
-                }
+                yield return Follow();
             }
             yield return null;
         }
     }
 
 
-    IEnumerator Face()
+    IEnumerator Face(Vector3 pos)
     {
-        var moveDir = player.transform.position - transform.position;
+        var moveDir = pos - transform.position;
         var targetRot = Vector3.SignedAngle(Vector3.right, moveDir, Vector3.forward);
         root.rotation = Quaternion.Slerp(root.rotation, Quaternion.Euler(0, 0, targetRot), rotationSlerp);
         yield break;
     }
 
-    private bool IsFacing(float minDot = 0.9f)
+    private bool IsFacing(Vector3 pos, float minDot = 0.9f)
     {
-        var lookDir = player.transform.position - transform.position;
+        var lookDir = pos - transform.position;
         lookDir.Normalize();
         return Vector3.Dot(root.right, lookDir) > minDot;
     }
@@ -105,10 +108,27 @@ public class Enemy : MonoBehaviour
     }
     IEnumerator Follow()
     {
-        var moveDir = player.transform.position - transform.position;
-        moveDir.Normalize();
-        rb.velocity = moveDir * followSpeed;
-        yield return Face();
-        yield break;
+        agent.SetDestination(player.transform.position);
+        float oldSpeed = agent.speed;
+        agent.speed = 0;
+        yield return null;
+        while (!IsFacing(agent.steeringTarget, 0.7f))
+        {
+            yield return Face(agent.steeringTarget);
+        }
+        agent.speed = oldSpeed;
+        agent.SetDestination(player.transform.position);
+        float t = 0;
+        while (t < minFollowPath && !agent.isStopped)
+        {
+            yield return Face(agent.steeringTarget);
+            t += Time.deltaTime;
+        }
+
+        //var moveDir = player.transform.position - transform.position;
+        //moveDir.Normalize();
+        //rb.velocity = moveDir * followSpeed;
+        //yield return Face(player.transform.position);
+        //yield break;
     }
 }

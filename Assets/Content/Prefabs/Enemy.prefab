@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 7723167253885343822}
   - component: {fileID: 2987098127497859650}
   - component: {fileID: 3789664208645011696}
+  - component: {fileID: 977725132544986324}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -199,7 +200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followSpeed: 2
   damage: 5
-  maxAttackDistance: 0.4
+  maxAttackDistance: 0.6
   waitBeforeAttack: 0.2
   waitAfterAttack: 0.3
   hitBox: {fileID: 4085124332928593397}
@@ -207,6 +208,29 @@ MonoBehaviour:
   attackPoint: {fileID: 4646968015330306549}
   rotationSlerp: 0.05
   rotationSlerpVariance: 0.015
+  minFollowPath: 0.2
+--- !u!195 &977725132544986324
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2696581275684658349}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 2
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 60
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 0
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 1
+  m_ObstacleAvoidanceType: 2
 --- !u!1 &4326728917777332306
 GameObject:
   m_ObjectHideFlags: 0
