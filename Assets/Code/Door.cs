@@ -26,7 +26,6 @@ public class Door : MonoBehaviour
         }
         var pos = collision.transform.position.y;
         var progress = pos - midPoint.transform.position.y;
-        Debug.Log(progress);
         progress = Mathf.Clamp(progress, -maxDist, maxDist);
         cameraManager.SetBetweenCamValue(1 - (progress / (2 * maxDist) + 0.5f));
         if (progress > 0)

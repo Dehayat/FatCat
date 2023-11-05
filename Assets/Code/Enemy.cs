@@ -109,6 +109,7 @@ public class Enemy : MonoBehaviour
     IEnumerator Follow()
     {
         agent.SetDestination(player.transform.position);
+        agent.isStopped = false;
         float oldSpeed = agent.speed;
         agent.speed = 0;
         yield return null;
@@ -117,7 +118,6 @@ public class Enemy : MonoBehaviour
             yield return Face(agent.steeringTarget);
         }
         agent.speed = oldSpeed;
-        agent.SetDestination(player.transform.position);
         float t = 0;
         while (t < minFollowPath && !agent.isStopped)
         {
