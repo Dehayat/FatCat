@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3717711521272410241}
   - component: {fileID: 8815901007355358021}
   - component: {fileID: 7079677168584941969}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Food
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6120505662022416926}
   - component: {fileID: 4262928801175187753}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,10 +187,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9002817848343384137}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: EatPoint
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

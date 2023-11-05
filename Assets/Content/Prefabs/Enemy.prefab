@@ -206,6 +206,7 @@ MonoBehaviour:
   root: {fileID: 3965721263012132819}
   attackPoint: {fileID: 4646968015330306549}
   rotationSlerp: 0.05
+  rotationSlerpVariance: 0.015
 --- !u!1 &4326728917777332306
 GameObject:
   m_ObjectHideFlags: 0

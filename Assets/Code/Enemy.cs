@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -16,6 +17,7 @@ public class Enemy : MonoBehaviour
     public Transform root;
     public Transform attackPoint;
     public float rotationSlerp = 0.3f;
+    public float rotationSlerpVariance = 0.1f;
 
     private Cat player;
     private Rigidbody2D playerRb;
@@ -24,6 +26,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        rotationSlerp += UnityEngine.Random.Range(-rotationSlerpVariance / 2, rotationSlerpVariance / 2);
     }
 
     private void Start()
