@@ -38,19 +38,30 @@ public class Cat : MonoBehaviour
     private int currentSizeStage = 0;
     private bool canMove = true;
     private bool canGetHit = true;
+    private Animator anim;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
     {
         if (!canMove)
         {
+            anim.SetBool("Walk", false);
             return;
         }
         Vector2 move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (move.magnitude > 0.1)
+        {
+            anim.SetBool("Walk", true);
+        }
+        else
+        {
+            anim.SetBool("Walk", false);
+        }
         move.Normalize();
         rb.velocity = move * speed;
         if (!eatTrigger.activeSelf && move.sqrMagnitude > 0.1f)
@@ -123,6 +134,7 @@ public class Cat : MonoBehaviour
 
 
     private Tweener scaleTweener;
+
     private void Grow(float increase)
     {
         scaleTweener?.Kill();

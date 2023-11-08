@@ -45,7 +45,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -173,7 +173,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0027692318, y: -0.125}
+  m_Offset: {x: 0.0027103424, y: 0.3961867}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -184,7 +184,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.58461523, y: 0.25}
+  m_Size: {x: 0.7709255, y: 0.60666156}
   m_EdgeRadius: 0
 --- !u!114 &3789664208645011696
 MonoBehaviour:
@@ -209,6 +209,7 @@ MonoBehaviour:
   rotationSlerp: 0.05
   rotationSlerpVariance: 0.015
   minFollowPath: 0.2
+  attackDistanceDecreaseStep: 0.1
 --- !u!195 &977725132544986324
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -223,7 +224,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 60
-  m_StoppingDistance: 1.5
+  m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -456,7 +457,7 @@ Transform:
   m_GameObject: {fileID: 7339789627473693116}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.392, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

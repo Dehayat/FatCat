@@ -3,23 +3,21 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class SideEnemy : MonoBehaviour
 {
     public float followSpeed;
     public int damage;
     public float maxAttackDistance;
+    public float sideStopDistance;
     public float waitBeforeAttack;
     public float waitAfterAttack;
     public Collider2D hitBox;
     public Transform root;
     public Transform attackPoint;
-    public float rotationSlerp = 0.3f;
-    public float rotationSlerpVariance = 0.1f;
     public float minFollowPath = 0.2f;
     public float attackDistanceDecreaseStep = 0.5f;
-    public bool attackFromSides = false;
     public Vector3 sideOffset;
-    public float sideDotMin = 0.7f;
+    public float sideDotMin = 0.85f;
 
     private Cat player;
     private NavMeshAgent agent;
@@ -30,7 +28,6 @@ public class Enemy : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody2D>();
-        rotationSlerp += UnityEngine.Random.Range(-rotationSlerpVariance / 2, rotationSlerpVariance / 2);
         savedAttackDistance = maxAttackDistance;
     }
 
@@ -51,36 +48,23 @@ public class Enemy : MonoBehaviour
             if (WithinAttackDistanceOfPlayer() && CanAttack())
             {
                 agent.isStopped = true;
-                if (IsFacing(player.transform.position))
+                yield return Face(player.transform.position);
+                if (CanSeePlayer())
                 {
-                    if (CanSeePlayer())
-                    {
-                        ResetAttackDistance();
-                        yield return Attack();
-                    }
-                    else
-                    {
-                        DecreaseAttackDistance();
-                    }
+                    ResetAttackDistance();
+                    yield return Attack();
                 }
                 else
                 {
-                    yield return Face(player.transform.position);
+                    DecreaseAttackDistance();
                 }
             }
             else
             {
-                if (attackFromSides)
+                var sidePos = GetClosestSideFromPlayer();
+                if (!OnSideOfPlayer())
                 {
-                    var sidePos = GetClosestSideFromPlayer();
-                    if (!OnSideOfPlayer())
-                    {
-                        yield return Follow(sidePos);
-                    }
-                    else
-                    {
-                        yield return Follow(player.transform.position);
-                    }
+                    yield return GoToSide(sidePos);
                 }
                 else
                 {
@@ -93,12 +77,9 @@ public class Enemy : MonoBehaviour
 
     private bool CanAttack()
     {
-        if (attackFromSides)
+        if (!OnSideOfPlayer())
         {
-            if (!OnSideOfPlayer())
-            {
-                return false;
-            }
+            return false;
         }
         return true;
     }
@@ -127,18 +108,20 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Face(Vector3 pos)
     {
-        var moveDir = pos - transform.position;
-        var targetRot = Vector3.SignedAngle(Vector3.right, moveDir, Vector3.forward);
-        root.rotation = Quaternion.Slerp(root.rotation, Quaternion.Euler(0, 0, targetRot), rotationSlerp);
+        var scale = transform.localScale;
+        if (pos.x > transform.position.x)
+        {
+            scale.x = Mathf.Abs(scale.x);
+        }
+        else
+        {
+            scale.x = -Mathf.Abs(scale.x);
+
+        }
+        transform.localScale = scale;
         yield break;
     }
 
-    private bool IsFacing(Vector3 pos, float minDot = 0.9f)
-    {
-        var lookDir = pos - transform.position;
-        lookDir.Normalize();
-        return Vector3.Dot(root.right, lookDir) > minDot;
-    }
 
     private Vector3 closestPlayerPos;
 
@@ -171,12 +154,6 @@ public class Enemy : MonoBehaviour
         agent.SetDestination(targetPos);
         agent.isStopped = false;
         float oldSpeed = agent.speed;
-        while (!IsFacing(agent.steeringTarget, 0.7f))
-        {
-            agent.speed = 0;
-            //yield return null;
-            yield return Face(agent.steeringTarget);
-        }
         agent.speed = oldSpeed;
         float t = 0;
         while (t < minFollowPath && !agent.isStopped)
@@ -184,12 +161,21 @@ public class Enemy : MonoBehaviour
             yield return Face(agent.steeringTarget);
             t += Time.deltaTime;
         }
-
-        //var moveDir = player.transform.position - transform.position;
-        //moveDir.Normalize();
-        //rb.velocity = moveDir * followSpeed;
-        //yield return Face(player.transform.position);
-        //yield break;
+    }
+    IEnumerator GoToSide(Vector3 targetPos)
+    {
+        agent.stoppingDistance = sideStopDistance;
+        agent.SetDestination(targetPos);
+        agent.isStopped = false;
+        float oldSpeed = agent.speed;
+        agent.speed = oldSpeed;
+        float t = 0;
+        while (t < minFollowPath && !agent.isStopped)
+        {
+            yield return Face(agent.steeringTarget);
+            t += Time.deltaTime;
+        }
+        agent.stoppingDistance = maxAttackDistance;
     }
 
     private Vector3 GetClosestSideFromPlayer()
