@@ -144,7 +144,7 @@ public class Enemy : MonoBehaviour
 
     private bool WithinAttackDistanceOfPlayer()
     {
-        return WithinAttackDistance(player.hurtBox.ClosestPoint(attackPoint.position));
+        return WithinAttackDistance(player.HurtBox.ClosestPoint(attackPoint.position));
     }
     private bool WithinAttackDistance(Vector3 position)
     {

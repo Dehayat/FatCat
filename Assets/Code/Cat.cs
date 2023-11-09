@@ -9,29 +9,53 @@ using UnityEngine.Events;
 
 public class Cat : MonoBehaviour
 {
-    [System.Serializable]
-    struct growSize
-    {
-        public float targetSize;
-        public GameObject sprite;
 
+    public Collider2D HurtBox
+    {
+        get
+        {
+            return stages[currentSizeStage].hurtBox;
+        }
+    }
+    public GameObject EatTrigger
+    {
+        get
+        {
+            return stages[currentSizeStage].eatSideTrigger;
+        }
+    }
+    public GameObject EatUpTrigger
+    {
+        get
+        {
+            return stages[currentSizeStage].eatUpTrigger;
+        }
+    }
+    public GameObject EatDownTrigger
+    {
+        get
+        {
+            return stages[currentSizeStage].eatDownTrigger;
+        }
+    }
+    public Transform EatPoint
+    {
+        get
+        {
+            return stages[currentSizeStage].eatPoint;
+        }
     }
 
     public float speed;
-    public GameObject eatTrigger;
     public float minFoodScale;
     public float maxFoodScale;
     public float size;
-    public GameObject currentSprite;
+    public GameObject currentStageObject;
     [SerializeField]
-    private growSize[] growPoints;
-    public Transform eatPoint;
+    private CatStage[] stages;
     public int health;
-    public Collider2D hurtBox;
     public float normalGrowDuration = 0.1f;
     public float eatDuration = 0.3f;
-    public GameObject eatUpTrigger;
-    public GameObject eatDownTrigger;
     public UnityEvent<float> onSizeChange;
 
     private Rigidbody2D rb;
@@ -44,6 +68,10 @@ public class Cat : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+    }
+    private void Start()
+    {
+        currentStageObject = stages[currentSizeStage].gameObject;
     }
 
     void Update()
@@ -64,15 +92,15 @@ public class Cat : MonoBehaviour
         }
         move.Normalize();
         rb.velocity = move * speed;
-        if (!eatTrigger.activeSelf && move.sqrMagnitude > 0.1f)
+        if (!EatTrigger.activeSelf && move.sqrMagnitude > 0.1f)
         {
-            eatTrigger.SetActive(true);
+            EatTrigger.SetActive(true);
         }
-        else if (eatTrigger.activeSelf && move.sqrMagnitude < 0.1f)
+        else if (EatTrigger.activeSelf && move.sqrMagnitude < 0.1f)
         {
-            eatTrigger.SetActive(false);
-            eatUpTrigger.SetActive(false);
-            eatDownTrigger.SetActive(false);
+            EatTrigger.SetActive(false);
+            EatUpTrigger.SetActive(false);
+            EatDownTrigger.SetActive(false);
         }
         var scale = transform.localScale;
         if (move.x < -0.1)
@@ -85,11 +113,11 @@ public class Cat : MonoBehaviour
         }
         if (move.y < -0.1)
         {
-            eatDownTrigger.SetActive(true);
+            EatDownTrigger.SetActive(true);
         }
         else if (move.y > 0.1)
         {
-            eatUpTrigger.SetActive(true);
+            EatUpTrigger.SetActive(true);
         }
         transform.localScale = scale;
     }
@@ -113,25 +141,36 @@ public class Cat : MonoBehaviour
 
     IEnumerator EatSequence(Food food)
     {
+        rb.simulated = false;
         canMove = false;
         canGetHit = false;
-        //AlignEatPoints(food.eatPoint.position);
-        var offset = food.eatPoint.position - eatPoint.position;
+        anim.SetTrigger("Eat");
+        var offset = food.eatPoint.position - EatPoint.position;
+        food.SetDrawOrder(3);
         transform.DOBlendableLocalMoveBy(offset, eatDuration);
-        yield return new WaitForSeconds(eatDuration);
+        chomp = false;
+        yield return new WaitUntil(() => chomp);
+
         Grow(food.size);
         Destroy(food.gameObject);
-        yield return null;
-        canMove = true;
+        finishEat = false;
+        yield return new WaitUntil(() => finishEat);
+
         canGetHit = true;
+        canMove = true;
+        rb.simulated = true;
     }
 
-    private void AlignEatPoints(Vector3 foodPoint)
+    private bool chomp = false;
+    public void EatFood()
     {
-        var offset = foodPoint - eatPoint.position;
-        transform.position += offset;
+        chomp = true;
     }
-
+    private bool finishEat = false;
+    public void FinishEatFood()
+    {
+        finishEat = true;
+    }
 
     private Tweener scaleTweener;
 
@@ -143,14 +182,13 @@ public class Cat : MonoBehaviour
         float sign = Mathf.Sign(transform.localScale.x);
         Vector3 scale = Vector3.one * size;
         scale.x *= sign;
-        //EditorApplication.isPaused = true;
-        if (currentSizeStage < growPoints.Length && size > growPoints[currentSizeStage].targetSize)
+        if (currentSizeStage < stages.Length - 1 && size > stages[currentSizeStage].targetSize)
         {
-            currentSprite.SetActive(false);
-            currentSprite = growPoints[currentSizeStage].sprite;
-            currentSprite.SetActive(true);
-            transform.localScale = scale;
+            currentStageObject.SetActive(false);
             currentSizeStage++;
+            currentStageObject = stages[currentSizeStage].gameObject;
+            currentStageObject.SetActive(true);
+            transform.localScale = scale;
             onSizeChange?.Invoke(size);
         }
         else

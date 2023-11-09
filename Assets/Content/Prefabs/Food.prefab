@@ -94,6 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 0.2
   eatPoint: {fileID: 9002817848343384137}
+  sprite: {fileID: 4262928801175187753}
 --- !u!1 &4424808872004658770
 GameObject:
   m_ObjectHideFlags: 0

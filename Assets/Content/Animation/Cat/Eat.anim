@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Walk
+  m_Name: Eat
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,11 +21,11 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 2c52be90324d10c4a8bca198eaaec73a, type: 3}
-    - time: 0.16666667
-      value: {fileID: 21300000, guid: a5230b03223bde84c9857589fe9b6ddc, type: 3}
-    - time: 0.31666666
-      value: {fileID: 21300000, guid: 2c52be90324d10c4a8bca198eaaec73a, type: 3}
+      value: {fileID: 21300000, guid: 199784863819eed418311c82084ad0a5, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: d833243ffc903bb40acaab20a2e71340, type: 3}
+    - time: 0.5833333
+      value: {fileID: 21300000, guid: d833243ffc903bb40acaab20a2e71340, type: 3}
     attribute: m_Sprite
     path: Stages/Stage1/Sprite
     classID: 212
@@ -34,11 +34,11 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 3d74f41bf3f6549438e694303e84e9ff, type: 3}
-    - time: 0.16666667
-      value: {fileID: 21300000, guid: 0b3930a69bc4c6b40ab2a92eb9bae641, type: 3}
-    - time: 0.31666666
-      value: {fileID: 21300000, guid: 0b3930a69bc4c6b40ab2a92eb9bae641, type: 3}
+      value: {fileID: 21300000, guid: 5c3e0851eb891be49892455f891e94ee, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: a7f117df0f3f5ab4f9f8851e01cb98bd, type: 3}
+    - time: 0.5833333
+      value: {fileID: 21300000, guid: a7f117df0f3f5ab4f9f8851e01cb98bd, type: 3}
     attribute: m_Sprite
     path: Stages/Stage2/Sprite
     classID: 212
@@ -47,11 +47,11 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 69d6109faba2e134b98b5851e3dcf89d, type: 3}
-    - time: 0.16666667
-      value: {fileID: 21300000, guid: 2c2a7a8cf0e4fb648bb4792866b3e37c, type: 3}
-    - time: 0.31666666
-      value: {fileID: 21300000, guid: 2c2a7a8cf0e4fb648bb4792866b3e37c, type: 3}
+      value: {fileID: 21300000, guid: 435ad48585b691146b71591cb5f8404e, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: a7f117df0f3f5ab4f9f8851e01cb98bd, type: 3}
+    - time: 0.5833333
+      value: {fileID: 21300000, guid: a7f117df0f3f5ab4f9f8851e01cb98bd, type: 3}
     attribute: m_Sprite
     path: Stages/Stage3/Sprite
     classID: 212
@@ -92,21 +92,21 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 2c52be90324d10c4a8bca198eaaec73a, type: 3}
-    - {fileID: 21300000, guid: a5230b03223bde84c9857589fe9b6ddc, type: 3}
-    - {fileID: 21300000, guid: 2c52be90324d10c4a8bca198eaaec73a, type: 3}
-    - {fileID: 21300000, guid: 3d74f41bf3f6549438e694303e84e9ff, type: 3}
-    - {fileID: 21300000, guid: 0b3930a69bc4c6b40ab2a92eb9bae641, type: 3}
-    - {fileID: 21300000, guid: 0b3930a69bc4c6b40ab2a92eb9bae641, type: 3}
-    - {fileID: 21300000, guid: 69d6109faba2e134b98b5851e3dcf89d, type: 3}
-    - {fileID: 21300000, guid: 2c2a7a8cf0e4fb648bb4792866b3e37c, type: 3}
-    - {fileID: 21300000, guid: 2c2a7a8cf0e4fb648bb4792866b3e37c, type: 3}
+    - {fileID: 21300000, guid: 199784863819eed418311c82084ad0a5, type: 3}
+    - {fileID: 21300000, guid: d833243ffc903bb40acaab20a2e71340, type: 3}
+    - {fileID: 21300000, guid: d833243ffc903bb40acaab20a2e71340, type: 3}
+    - {fileID: 21300000, guid: 5c3e0851eb891be49892455f891e94ee, type: 3}
+    - {fileID: 21300000, guid: a7f117df0f3f5ab4f9f8851e01cb98bd, type: 3}
+    - {fileID: 21300000, guid: a7f117df0f3f5ab4f9f8851e01cb98bd, type: 3}
+    - {fileID: 21300000, guid: 435ad48585b691146b71591cb5f8404e, type: 3}
+    - {fileID: 21300000, guid: a7f117df0f3f5ab4f9f8851e01cb98bd, type: 3}
+    - {fileID: 21300000, guid: a7f117df0f3f5ab4f9f8851e01cb98bd, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.33333334
+    m_StopTime: 0.59999996
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -125,4 +125,18 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.33333334
+    functionName: EatFood
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5833333
+    functionName: FinishEatFood
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
