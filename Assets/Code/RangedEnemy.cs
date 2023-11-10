@@ -3,35 +3,27 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SideEnemy : MonoBehaviour
+public class RangedEnemy : MonoBehaviour
 {
     public float followSpeed;
-    public int damage;
     public float maxAttackDistance;
-    public float sideStopDistance;
     public float waitBeforeAttack;
-    public float attackDuration;
     public float waitAfterAttack;
-    public Collider2D hitBox;
     public Transform root;
     public Transform attackPoint;
     public float minFollowPath = 0.2f;
     public float attackDistanceDecreaseStep = 0.5f;
-    public Vector3 sideOffset;
-    public float sideDotMin = 0.85f;
+    public GameObject attackPrefab;
 
     private Cat player;
     private NavMeshAgent agent;
     private Rigidbody2D rb;
     private float savedAttackDistance;
-    private Animator anim;
-    private Vector3 attackOffset;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
         savedAttackDistance = maxAttackDistance;
     }
 
@@ -40,7 +32,6 @@ public class SideEnemy : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         player = FindAnyObjectByType<Cat>();
-        attackOffset = transform.position - attackPoint.position;
         StartCoroutine(DoBehaviour());
     }
 
@@ -53,7 +44,6 @@ public class SideEnemy : MonoBehaviour
             if (WithinAttackDistanceOfPlayer() && CanAttack())
             {
                 agent.isStopped = true;
-                yield return Face(player.transform.position);
                 if (CanSeePlayer())
                 {
                     ResetAttackDistance();
@@ -66,15 +56,7 @@ public class SideEnemy : MonoBehaviour
             }
             else
             {
-                var sidePos = GetClosestSideFromPlayer();
-                if (!OnSideOfPlayer())
-                {
-                    yield return GoToSide(sidePos);
-                }
-                else
-                {
-                    yield return Follow(player.transform.position);
-                }
+                yield return Follow(player.transform.position);
             }
             yield return null;
         }
@@ -82,18 +64,7 @@ public class SideEnemy : MonoBehaviour
 
     private bool CanAttack()
     {
-        if (!OnSideOfPlayer())
-        {
-            return false;
-        }
         return true;
-    }
-
-    private bool OnSideOfPlayer()
-    {
-        var toPlayer = player.transform.position - attackPoint.position;
-        var dot = Vector3.Dot(toPlayer.normalized, Vector3.right);
-        return Mathf.Abs(dot) > sideDotMin;
     }
 
     private void ResetAttackDistance()
@@ -116,17 +87,16 @@ public class SideEnemy : MonoBehaviour
         var scale = transform.localScale;
         if (pos.x > transform.position.x)
         {
-            scale.x = -Mathf.Abs(scale.x);
+            scale.x = Mathf.Abs(scale.x);
         }
         else
         {
-            scale.x = Mathf.Abs(scale.x);
+            scale.x = -Mathf.Abs(scale.x);
 
         }
         transform.localScale = scale;
         yield break;
     }
-
 
     private Vector3 closestPlayerPos;
 
@@ -148,33 +118,17 @@ public class SideEnemy : MonoBehaviour
     }
     IEnumerator Attack()
     {
+        yield return Face(player.transform.position);
         rb.velocity = Vector2.zero;
-        var oldSpeed = agent.speed;
-        agent.speed = 0;
         yield return new WaitForSeconds(waitBeforeAttack);
-        player.Attack(damage);
-        anim.SetBool("Attack", true);
-        yield return new WaitForSeconds(attackDuration);
-        anim.SetBool("Attack", false);
+        var attackInstance = Instantiate(attackPrefab, attackPoint.transform.position, Quaternion.identity);
+        attackInstance.GetComponent<Bullet>().SetDir(player.transform.position - attackPoint.position);
         yield return new WaitForSeconds(waitAfterAttack);
-        agent.speed = oldSpeed;
     }
     IEnumerator Follow(Vector3 targetPos)
     {
-        agent.stoppingDistance = maxAttackDistance;
-        agent.SetDestination(targetPos + attackOffset);
-        agent.isStopped = false;
-        float t = 0;
-        while (t < minFollowPath && !agent.isStopped)
-        {
-            yield return Face(agent.steeringTarget);
-            t += Time.deltaTime;
-        }
-    }
-    IEnumerator GoToSide(Vector3 targetPos)
-    {
-        agent.stoppingDistance = sideStopDistance;
-        agent.SetDestination(targetPos + attackOffset);
+        agent.stoppingDistance = maxAttackDistance - 0.3f;
+        agent.SetDestination(targetPos);
         agent.isStopped = false;
         float t = 0;
         while (t < minFollowPath && agent.isOnNavMesh && !agent.isStopped)
@@ -182,20 +136,11 @@ public class SideEnemy : MonoBehaviour
             yield return Face(agent.steeringTarget);
             t += Time.deltaTime;
         }
-        agent.stoppingDistance = maxAttackDistance;
-    }
 
-    private Vector3 GetClosestSideFromPlayer()
-    {
-        var side1 = player.transform.position + sideOffset;
-        var side2 = player.transform.position - sideOffset;
-        if (Vector3.Distance(transform.position, side1) < Vector3.Distance(transform.position, side2))
-        {
-            return side1;
-        }
-        else
-        {
-            return side2;
-        }
+        //var moveDir = player.transform.position - transform.position;
+        //moveDir.Normalize();
+        //rb.velocity = moveDir * followSpeed;
+        //yield return Face(player.transform.position);
+        //yield break;
     }
 }
