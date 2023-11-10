@@ -1,0 +1,4 @@
+When I collided with the rat as the last stage of fat cat
+his navigation stopped working
+I need to see if this has to do with the rigidbody or the collider
+or maybe if this results in an offset of the agent.

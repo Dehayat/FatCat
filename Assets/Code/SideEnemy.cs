@@ -10,6 +10,7 @@ public class SideEnemy : MonoBehaviour
     public float maxAttackDistance;
     public float sideStopDistance;
     public float waitBeforeAttack;
+    public float attackDuration;
     public float waitAfterAttack;
     public Collider2D hitBox;
     public Transform root;
@@ -23,11 +24,14 @@ public class SideEnemy : MonoBehaviour
     private NavMeshAgent agent;
     private Rigidbody2D rb;
     private float savedAttackDistance;
+    private Animator anim;
+    private Vector3 attackOffset;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         savedAttackDistance = maxAttackDistance;
     }
 
@@ -36,6 +40,7 @@ public class SideEnemy : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         player = FindAnyObjectByType<Cat>();
+        attackOffset = transform.position - attackPoint.position;
         StartCoroutine(DoBehaviour());
     }
 
@@ -86,7 +91,7 @@ public class SideEnemy : MonoBehaviour
 
     private bool OnSideOfPlayer()
     {
-        var toPlayer = player.transform.position - transform.position;
+        var toPlayer = player.transform.position - attackPoint.position;
         var dot = Vector3.Dot(toPlayer.normalized, Vector3.right);
         return Mathf.Abs(dot) > sideDotMin;
     }
@@ -111,11 +116,11 @@ public class SideEnemy : MonoBehaviour
         var scale = transform.localScale;
         if (pos.x > transform.position.x)
         {
-            scale.x = Mathf.Abs(scale.x);
+            scale.x = -Mathf.Abs(scale.x);
         }
         else
         {
-            scale.x = -Mathf.Abs(scale.x);
+            scale.x = Mathf.Abs(scale.x);
 
         }
         transform.localScale = scale;
@@ -144,17 +149,21 @@ public class SideEnemy : MonoBehaviour
     IEnumerator Attack()
     {
         rb.velocity = Vector2.zero;
+        var oldSpeed = agent.speed;
+        agent.speed = 0;
         yield return new WaitForSeconds(waitBeforeAttack);
         player.Attack(damage);
+        anim.SetBool("Attack", true);
+        yield return new WaitForSeconds(attackDuration);
+        anim.SetBool("Attack", false);
         yield return new WaitForSeconds(waitAfterAttack);
+        agent.speed = oldSpeed;
     }
     IEnumerator Follow(Vector3 targetPos)
     {
         agent.stoppingDistance = maxAttackDistance;
-        agent.SetDestination(targetPos);
+        agent.SetDestination(targetPos+attackOffset);
         agent.isStopped = false;
-        float oldSpeed = agent.speed;
-        agent.speed = oldSpeed;
         float t = 0;
         while (t < minFollowPath && !agent.isStopped)
         {
@@ -165,10 +174,8 @@ public class SideEnemy : MonoBehaviour
     IEnumerator GoToSide(Vector3 targetPos)
     {
         agent.stoppingDistance = sideStopDistance;
-        agent.SetDestination(targetPos);
+        agent.SetDestination(targetPos+attackOffset);
         agent.isStopped = false;
-        float oldSpeed = agent.speed;
-        agent.speed = oldSpeed;
         float t = 0;
         while (t < minFollowPath && !agent.isStopped)
         {
