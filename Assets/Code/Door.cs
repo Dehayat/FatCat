@@ -8,6 +8,7 @@ public class Door : MonoBehaviour
     public Transform midPoint;
     public SpriteRenderer overlay;
     public CameraManager cameraManager;
+    public float maxAlpha = 0.8f;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -35,7 +36,7 @@ public class Door : MonoBehaviour
         {
             var alpha = -progress / maxDist;
             var color = overlay.color;
-            color.a = alpha;
+            color.a = alpha*maxAlpha;
             overlay.color = color;
         }
     }
@@ -56,7 +57,7 @@ public class Door : MonoBehaviour
         {
             cameraManager.SetFollowCam();
             var color = overlay.color;
-            color.a = 1;
+            color.a = maxAlpha;
             overlay.color = color;
         }
     }
