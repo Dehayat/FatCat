@@ -12,7 +12,7 @@ public class TileGenerator : MonoBehaviour
     public Vector2 tileSize;
 
     public bool gen = false;
-
+#if UNITY_EDITOR
     private void OnValidate()
     {
         if (gen)
@@ -55,4 +55,5 @@ public class TileGenerator : MonoBehaviour
             pos.x += tileSize.x;
         }
     }
+#endif
 }
