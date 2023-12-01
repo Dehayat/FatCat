@@ -127,11 +127,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 3
-        width: 324
-        height: 391
+        y: 19
+        width: 301
+        height: 281
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -144,36 +144,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: houses (PLACEHOLDERS)_1
-      rect:
-        serializedVersion: 2
-        x: 389
-        y: 4
-        width: 401
-        height: 307
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ccb090fbaa6069f4aaf9c0ecea9b8d7f
-      internalID: 2014925930
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: houses (PLACEHOLDERS)_2
       rect:
         serializedVersion: 2
-        x: 839
-        y: 0
-        width: 341
-        height: 254
+        x: 400
+        y: 8
+        width: 215
+        height: 307
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -181,6 +160,27 @@ TextureImporter:
       bones: []
       spriteID: 4bb4c667b3190c34199142165c8a7280
       internalID: 1384786783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: houses (PLACEHOLDERS)_3
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 0
+        width: 212
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e56aaaca173c3f04e8cbcbe2af48c3f4
+      internalID: -2086252805
       vertices: []
       indices: 
       edges: []
@@ -199,6 +199,7 @@ TextureImporter:
       houses (PLACEHOLDERS)_0: 803795554
       houses (PLACEHOLDERS)_1: 2014925930
       houses (PLACEHOLDERS)_2: 1384786783
+      houses (PLACEHOLDERS)_3: -2086252805
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

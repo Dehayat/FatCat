@@ -44,11 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37be31d6fe5925f44836491aed0672f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  genProbability: 0.6
+  genProbability: 0.9
   possibleItmes:
   - possible: 1
     prefab: {fileID: 3640725004979169906, guid: 346303cbadbea7f45b7098849e5b046d, type: 3}
-    weight: 5
+    weight: 10
   - possible: 1
     prefab: {fileID: 1129803525858297217, guid: 53e0d02317b183f4a907ab962f8f8d1e, type: 3}
+    weight: 8
+  - possible: 1
+    prefab: {fileID: 3640725004979169906, guid: 18cee5d93fd34364fa64be19939fecbd, type: 3}
     weight: 5

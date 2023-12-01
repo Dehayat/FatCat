@@ -9,5 +9,6 @@ public class CatStage : MonoBehaviour
     public GameObject eatUpTrigger;
     public GameObject eatDownTrigger;
     public GameObject eatSideTrigger;
+    public GameObject eatNearTigger;
     public Transform eatPoint;
 }

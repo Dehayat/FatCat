@@ -86,15 +86,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7079677168584941969, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
       propertyPath: size
-      value: 0.3
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079677168584941969, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
+      propertyPath: digestSize
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 8815901007355358021, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
+      propertyPath: m_Size.x
+      value: 0.51997757
       objectReference: {fileID: 0}
     - target: {fileID: 8815901007355358021, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
       propertyPath: m_Size.y
-      value: 0.24134445
+      value: 0.5835352
+      objectReference: {fileID: 0}
+    - target: {fileID: 8815901007355358021, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.006790161
       objectReference: {fileID: 0}
     - target: {fileID: 8815901007355358021, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
       propertyPath: m_Offset.y
-      value: 0.106637
+      value: -0.06445837
       objectReference: {fileID: 0}
     - target: {fileID: 9002817848343384137, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
       propertyPath: m_LocalPosition.y

@@ -6,6 +6,7 @@ using DG;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 public class Cat : MonoBehaviour
 {
@@ -38,6 +39,13 @@ public class Cat : MonoBehaviour
             return stages[currentSizeStage].eatDownTrigger;
         }
     }
+    public GameObject EatNearTrigger
+    {
+        get
+        {
+            return stages[currentSizeStage].eatNearTigger;
+        }
+    }
     public Transform EatPoint
     {
         get
@@ -57,6 +65,8 @@ public class Cat : MonoBehaviour
     public float normalGrowDuration = 0.1f;
     public float eatDuration = 0.3f;
     public UnityEvent<float> onSizeChange;
+    public UnityEvent onLose;
+    public UnityEvent onWin;
 
     private Rigidbody2D rb;
     private int currentSizeStage = 0;
@@ -68,6 +78,7 @@ public class Cat : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        canMove = false;
     }
     private void Start()
     {
@@ -124,6 +135,10 @@ public class Cat : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!canMove)
+        {
+            return;
+        }
         var food = collision.GetComponent<Food>();
         if (food != null)
         {
@@ -134,6 +149,11 @@ public class Cat : MonoBehaviour
         }
     }
 
+    public void SetInvincible()
+    {
+        canGetHit = false;
+    }
+
     private void Eat(Food food)
     {
         StartCoroutine(EatSequence(food));
@@ -141,6 +161,10 @@ public class Cat : MonoBehaviour
 
     IEnumerator EatSequence(Food food)
     {
+        if (food.TryGetComponent<Car>(out var car))
+        {
+            car.Stop();
+        }
         rb.simulated = false;
         canMove = false;
         canGetHit = false;
@@ -150,15 +174,35 @@ public class Cat : MonoBehaviour
         transform.DOBlendableLocalMoveBy(offset, eatDuration);
         chomp = false;
         yield return new WaitUntil(() => chomp);
-
-        Grow(food.size);
+        Grow(food.digestSize);
         Destroy(food.gameObject);
+        float digestSize = EatAllNear();
+        Grow(digestSize);
         finishEat = false;
         yield return new WaitUntil(() => finishEat);
 
         canGetHit = true;
         canMove = true;
         rb.simulated = true;
+    }
+
+    public Collider2D[] colCache = new Collider2D[30];
+    private float EatAllNear()
+    {
+        float totalGrowSize = 0;
+        var contactFilter = new ContactFilter2D();
+        contactFilter.useTriggers = false;
+        contactFilter.layerMask = -1;
+        int colCount = Physics2D.OverlapCollider(EatNearTrigger.GetComponent<Collider2D>(), new ContactFilter2D(), colCache);
+        for (int i = 0; i < colCount; i++)
+        {
+            if (colCache[i].TryGetComponent<Food>(out var food) && CanEat(food))
+            {
+                totalGrowSize += food.digestSize;
+                Destroy(colCache[i].gameObject);
+            }
+        }
+        return totalGrowSize;
     }
 
     private bool chomp = false;
@@ -200,13 +244,9 @@ public class Cat : MonoBehaviour
 
     private bool CanEat(Food food)
     {
-        if (!canMove)
-        {
-            return false;
-        }
         float minSize = size * minFoodScale;
         float maxSize = size * maxFoodScale;
-        if (food.size > minSize && food.size < maxSize)
+        if (food.size >= minSize - Mathf.Epsilon && food.size <= maxSize + Mathf.Epsilon)
         {
             return true;
         }
@@ -222,7 +262,35 @@ public class Cat : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Debug.Log("Lose");
+            health = 0;
+            SetInvincible();
+            StartCoroutine(DieStuff());
         }
+    }
+
+    IEnumerator DieStuff()
+    {
+        EnableControls(false);
+        scaleTweener = transform.DOScale(Vector3.one, 0.7f);
+        GetComponent<AudioSource>().Play();
+        anim.SetTrigger("Die");
+        yield return new WaitForSeconds(0.3f);
+        currentStageObject.SetActive(false);
+        currentSizeStage = 0;
+        currentStageObject = stages[currentSizeStage].gameObject;
+        currentStageObject.SetActive(true);
+        //onSizeChange?.Invoke(size);
+        yield return new WaitForSeconds(0.7f);
+        onLose?.Invoke();
+    }
+
+    public void EnableControls(bool enable)
+    {
+        canMove = enable;
+    }
+
+    public void Win()
+    {
+        anim.SetTrigger("Win");
     }
 }

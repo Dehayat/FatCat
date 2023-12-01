@@ -36,7 +36,7 @@ public class Door : MonoBehaviour
         {
             var alpha = -progress / maxDist;
             var color = overlay.color;
-            color.a = alpha*maxAlpha;
+            color.a = alpha * maxAlpha;
             overlay.color = color;
         }
     }
@@ -59,6 +59,7 @@ public class Door : MonoBehaviour
             var color = overlay.color;
             color.a = maxAlpha;
             overlay.color = color;
+            Destroy(gameObject);
         }
     }
 }

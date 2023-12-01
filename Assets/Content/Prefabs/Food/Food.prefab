@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3717711521272410241}
   - component: {fileID: 8815901007355358021}
   - component: {fileID: 7079677168584941969}
+  - component: {fileID: 5961193678564479378}
   m_Layer: 9
   m_Name: Food
   m_TagString: Untagged
@@ -95,6 +96,22 @@ MonoBehaviour:
   size: 0.2
   eatPoint: {fileID: 9002817848343384137}
   sprite: {fileID: 4262928801175187753}
+--- !u!114 &5961193678564479378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541262507260308356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &4424808872004658770
 GameObject:
   m_ObjectHideFlags: 0

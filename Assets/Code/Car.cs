@@ -1,9 +1,15 @@
+using System;
 using UnityEngine;
 
 public class Car : MonoBehaviour
 {
     public float lifeTime = 10f;
     public float speed;
+
+    internal void Stop()
+    {
+        speed = 0;
+    }
 
     private void Start()
     {

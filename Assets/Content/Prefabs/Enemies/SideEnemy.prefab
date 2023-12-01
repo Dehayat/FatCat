@@ -172,8 +172,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.892056, y: -3.05, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7884429860643979904}
   m_Father: {fileID: 0}
@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followSpeed: 2
-  damage: 5
+  damage: 4
   maxAttackDistance: 1.7
   sideStopDistance: 0
   waitBeforeAttack: 0.2
@@ -331,7 +331,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9795ae1f83bf8bd428f31eac43fc1c31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 2
+  size: 5
+  digestSize: 0.8
   eatPoint: {fileID: 9024130697962078565}
   sprite: {fileID: 5770938426968808321}
 --- !u!1 &6522146661940868907

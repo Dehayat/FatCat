@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 541262507260308356, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
       propertyPath: m_Name
-      value: BigFish Variant
+      value: BigFish
       objectReference: {fileID: 0}
     - target: {fileID: 3717711521272410241, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
       propertyPath: m_LocalScale.x
@@ -114,7 +114,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7079677168584941969, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
       propertyPath: size
-      value: 5
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079677168584941969, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
+      propertyPath: digestSize
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8815901007355358021, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
       propertyPath: m_Size.x
@@ -139,5 +143,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 541262507260308356, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6430711909939873480}
   m_SourcePrefab: {fileID: 100100000, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
+--- !u!1 &6286997690478415040 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 541262507260308356, guid: 6eaf1e380c48ce34dac8f4817532622b, type: 3}
+  m_PrefabInstance: {fileID: 5817828795500341060}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6430711909939873480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6286997690478415040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14893e92fbcb1bf40963aa04b42b2bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onWin:
+    m_PersistentCalls:
+      m_Calls: []
